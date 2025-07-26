@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_682241d9be56d158834ea4558311f010 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+            </style>
+        
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/leaflet.markercluster.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/MarkerCluster.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/MarkerCluster.Default.css"/>
+</head>
+<body>
+    
+    
+<div style="position: fixed; top: 10px; left: 50px; z-index:9999; background-color: white; padding: 10px;
+            border: 2px solid grey; border-radius: 10px; box-shadow: 2px 2px 6px rgba(0,0,0,0.3)">
+    <img src="data:image/png;base64,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" style="height: 40px; vertical-align: middle; margin-right: 10px;">
+    <span style="font-size: 20px; font-weight: bold;">Discounted Summer Camps Map</span>
+</div>
+    
+            <div class="folium-map" id="map_682241d9be56d158834ea4558311f010" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_682241d9be56d158834ea4558311f010 = L.map(
+                "map_682241d9be56d158834ea4558311f010",
+                {
+                    center: [30.05, 31.25],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 10,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_21295ad59cc7759ec235180d606d1ade = L.tileLayer(
+                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {"attribution": "Data by \u0026copy; \u003ca href=\"http://openstreetmap.org\"\u003eOpenStreetMap\u003c/a\u003e, under \u003ca href=\"http://www.openstreetmap.org/copyright\"\u003eODbL\u003c/a\u003e.", "detectRetina": false, "maxNativeZoom": 18, "maxZoom": 18, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            ).addTo(map_682241d9be56d158834ea4558311f010);
+        
+    
+            var marker_cluster_64d166d460d024770d2d7b2a5c7f9659 = L.markerClusterGroup(
+                {}
+            );
+            map_682241d9be56d158834ea4558311f010.addLayer(marker_cluster_64d166d460d024770d2d7b2a5c7f9659);
+        
+    
+            var marker_a41d2ff9d6f93d035e210318cfeeb9d4 = L.marker(
+                [29.960472840937264, 31.270708828835517],
+                {}
+            ).addTo(marker_cluster_64d166d460d024770d2d7b2a5c7f9659);
+        
+    
+            var icon_d022099e104754cee21cf9f9815f2cc3 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_a41d2ff9d6f93d035e210318cfeeb9d4.setIcon(icon_d022099e104754cee21cf9f9815f2cc3);
+        
+    
+        var popup_c47563c298718e8be4d38573268d79bb = L.popup({"maxWidth": 300});
+
+        
+            var html_54b1197c723e1e50c52e5813795bbbf4 = $(`<div id="html_54b1197c723e1e50c52e5813795bbbf4" style="width: 100.0%; height: 100.0%;"><b>Remal, Maadi</b><br>Day camp, Ages 4–12, 15% off</div>`)[0];
+            popup_c47563c298718e8be4d38573268d79bb.setContent(html_54b1197c723e1e50c52e5813795bbbf4);
+        
+
+        marker_a41d2ff9d6f93d035e210318cfeeb9d4.bindPopup(popup_c47563c298718e8be4d38573268d79bb)
+        ;
+
+        
+    
+    
+            var marker_124343dd31d8f604cf9ef38f8eb1dc22 = L.marker(
+                [30.061853482220165, 31.3891770117867],
+                {}
+            ).addTo(marker_cluster_64d166d460d024770d2d7b2a5c7f9659);
+        
+    
+            var icon_bdaf54f679af6064c9069b0c3d344e4c = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_124343dd31d8f604cf9ef38f8eb1dc22.setIcon(icon_bdaf54f679af6064c9069b0c3d344e4c);
+        
+    
+        var popup_417f6be252e22bec1c7f86dee5ee7c57 = L.popup({"maxWidth": 300});
+
+        
+            var html_d59c6ad07466527812e1c6ba1f380471 = $(`<div id="html_d59c6ad07466527812e1c6ba1f380471" style="width: 100.0%; height: 100.0%;"><b>Remal, Imperial College</b><br>Day camp, Ages 4–12, 10% off</div>`)[0];
+            popup_417f6be252e22bec1c7f86dee5ee7c57.setContent(html_d59c6ad07466527812e1c6ba1f380471);
+        
+
+        marker_124343dd31d8f604cf9ef38f8eb1dc22.bindPopup(popup_417f6be252e22bec1c7f86dee5ee7c57)
+        ;
+
+        
+    
+    
+            var marker_dd7be5762f056f76f51ad53b0e6e6eef = L.marker(
+                [29.99897288878593, 31.42951558650547],
+                {}
+            ).addTo(marker_cluster_64d166d460d024770d2d7b2a5c7f9659);
+        
+    
+            var icon_553565da3356e7cf1ed2e9d6e5cdec6d = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_dd7be5762f056f76f51ad53b0e6e6eef.setIcon(icon_553565da3356e7cf1ed2e9d6e5cdec6d);
+        
+    
+        var popup_a9d55e05466afc272edac8119e56ccde = L.popup({"maxWidth": 300});
+
+        
+            var html_8263534d9b3e25506b1bd38696fb3798 = $(`<div id="html_8263534d9b3e25506b1bd38696fb3798" style="width: 100.0%; height: 100.0%;"><b>Remal, Modern Education School</b><br>Day camp, Ages 4–12, 10% off</div>`)[0];
+            popup_a9d55e05466afc272edac8119e56ccde.setContent(html_8263534d9b3e25506b1bd38696fb3798);
+        
+
+        marker_dd7be5762f056f76f51ad53b0e6e6eef.bindPopup(popup_a9d55e05466afc272edac8119e56ccde)
+        ;
+
+        
+    
+    
+            var marker_2123b4f0a4ae06b531497981b0f06a4d = L.marker(
+                [29.998992976102993, 31.42957644296816],
+                {}
+            ).addTo(marker_cluster_64d166d460d024770d2d7b2a5c7f9659);
+        
+    
+            var icon_6bb365e4a465c4c94a68d2ecc2e70dee = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_2123b4f0a4ae06b531497981b0f06a4d.setIcon(icon_6bb365e4a465c4c94a68d2ecc2e70dee);
+        
+    
+        var popup_397059d4095c7011cf1489a6342c1c4b = L.popup({"maxWidth": 300});
+
+        
+            var html_ecec9aeccd0c9e7a73de31a38fab0d82 = $(`<div id="html_ecec9aeccd0c9e7a73de31a38fab0d82" style="width: 100.0%; height: 100.0%;"><b>Wellspring, Cheouifat School</b><br>Day camp, Ages 4–12 & 13–17, 15% off</div>`)[0];
+            popup_397059d4095c7011cf1489a6342c1c4b.setContent(html_ecec9aeccd0c9e7a73de31a38fab0d82);
+        
+
+        marker_2123b4f0a4ae06b531497981b0f06a4d.bindPopup(popup_397059d4095c7011cf1489a6342c1c4b)
+        ;
+
+        
+    
+    
+            var marker_f290b1f8a992906be385bfbd295bc938 = L.marker(
+                [29.999266405031037, 31.051094013494527],
+                {}
+            ).addTo(marker_cluster_64d166d460d024770d2d7b2a5c7f9659);
+        
+    
+            var icon_96db6b26e0de63b8ed410fa7207b2cae = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_f290b1f8a992906be385bfbd295bc938.setIcon(icon_96db6b26e0de63b8ed410fa7207b2cae);
+        
+    
+        var popup_c82f6b3b865a648a89a3be49eae78ee0 = L.popup({"maxWidth": 300});
+
+        
+            var html_45fe1c352a1de4fef9dcffa2d3b8d090 = $(`<div id="html_45fe1c352a1de4fef9dcffa2d3b8d090" style="width: 100.0%; height: 100.0%;"><b>Wellspring, Alsson School</b><br>Day camp, Ages 4–12 & 13–17, 15% off</div>`)[0];
+            popup_c82f6b3b865a648a89a3be49eae78ee0.setContent(html_45fe1c352a1de4fef9dcffa2d3b8d090);
+        
+
+        marker_f290b1f8a992906be385bfbd295bc938.bindPopup(popup_c82f6b3b865a648a89a3be49eae78ee0)
+        ;
+
+        
+    
+    
+            var marker_11f1a4e691bb1dbb7571320523620f8b = L.marker(
+                [30.034435976310387, 31.431075130681247],
+                {}
+            ).addTo(marker_cluster_64d166d460d024770d2d7b2a5c7f9659);
+        
+    
+            var icon_7e15f3efb0b66200ef62b4037033991f = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_11f1a4e691bb1dbb7571320523620f8b.setIcon(icon_7e15f3efb0b66200ef62b4037033991f);
+        
+    
+        var popup_ff938555d4ed8dd3c82c9531aa98659b = L.popup({"maxWidth": 300});
+
+        
+            var html_f106cead9b189d21fc04fa103586d0a6 = $(`<div id="html_f106cead9b189d21fc04fa103586d0a6" style="width: 100.0%; height: 100.0%;"><b>Wellspring, Metropolitan</b><br>Day camp, Ages 4–12 & 13–17, 15% off</div>`)[0];
+            popup_ff938555d4ed8dd3c82c9531aa98659b.setContent(html_f106cead9b189d21fc04fa103586d0a6);
+        
+
+        marker_11f1a4e691bb1dbb7571320523620f8b.bindPopup(popup_ff938555d4ed8dd3c82c9531aa98659b)
+        ;
+
+        
+    
+    
+            var marker_1c697f5eaf329fd7ade473b92aca4260 = L.marker(
+                [30.013977653657967, 31.459679773010933],
+                {}
+            ).addTo(marker_cluster_64d166d460d024770d2d7b2a5c7f9659);
+        
+    
+            var icon_adcb4e3a5c364458f7bfcce4facf2a2f = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_1c697f5eaf329fd7ade473b92aca4260.setIcon(icon_adcb4e3a5c364458f7bfcce4facf2a2f);
+        
+    
+        var popup_56df681f6e549be7073ec3f096d6efb6 = L.popup({"maxWidth": 300});
+
+        
+            var html_0a63b4153a14d153f90c4d6d8462282e = $(`<div id="html_0a63b4153a14d153f90c4d6d8462282e" style="width: 100.0%; height: 100.0%;"><b>Madarek, Capital School</b><br>Day camp, Ages 4–12 & 13–17, 550 EGP off</div>`)[0];
+            popup_56df681f6e549be7073ec3f096d6efb6.setContent(html_0a63b4153a14d153f90c4d6d8462282e);
+        
+
+        marker_1c697f5eaf329fd7ade473b92aca4260.bindPopup(popup_56df681f6e549be7073ec3f096d6efb6)
+        ;
+
+        
+    
+    
+            var marker_ff3cd1872249bfe98eb4625c599ad489 = L.marker(
+                [30.135542032228244, 31.62547432228358],
+                {}
+            ).addTo(marker_cluster_64d166d460d024770d2d7b2a5c7f9659);
+        
+    
+            var icon_d264660d285ae10393ad26d41bac8b99 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_ff3cd1872249bfe98eb4625c599ad489.setIcon(icon_d264660d285ae10393ad26d41bac8b99);
+        
+    
+        var popup_8184bf96ebc377e29892b0fb272024bd = L.popup({"maxWidth": 300});
+
+        
+            var html_0e8043d8d34a365998f85482189da654 = $(`<div id="html_0e8043d8d34a365998f85482189da654" style="width: 100.0%; height: 100.0%;"><b>Madarek, Carleton School, Shorouk</b><br>Day camp, Ages 4–12, 550 EGP off</div>`)[0];
+            popup_8184bf96ebc377e29892b0fb272024bd.setContent(html_0e8043d8d34a365998f85482189da654);
+        
+
+        marker_ff3cd1872249bfe98eb4625c599ad489.bindPopup(popup_8184bf96ebc377e29892b0fb272024bd)
+        ;
+
+        
+    
+    
+            var marker_64bd79b3e59ee8ecfb275480df3d36a9 = L.marker(
+                [30.05921972092959, 31.365079401846092],
+                {}
+            ).addTo(marker_cluster_64d166d460d024770d2d7b2a5c7f9659);
+        
+    
+            var icon_cbfe3d9053ae2f0bdba0f4bf6ee154ef = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_64bd79b3e59ee8ecfb275480df3d36a9.setIcon(icon_cbfe3d9053ae2f0bdba0f4bf6ee154ef);
+        
+    
+        var popup_4bc6eb08227001d8c468b7588ddf03c4 = L.popup({"maxWidth": 300});
+
+        
+            var html_08c3197aa8e03ecb7ba30b3d73422f82 = $(`<div id="html_08c3197aa8e03ecb7ba30b3d73422f82" style="width: 100.0%; height: 100.0%;"><b>Madarek, Manaret Heliopolis Int'l School</b><br>Day camp, Ages 4–12, 350 EGP off</div>`)[0];
+            popup_4bc6eb08227001d8c468b7588ddf03c4.setContent(html_08c3197aa8e03ecb7ba30b3d73422f82);
+        
+
+        marker_64bd79b3e59ee8ecfb275480df3d36a9.bindPopup(popup_4bc6eb08227001d8c468b7588ddf03c4)
+        ;
+
+        
+    
+    
+            var marker_afbb9f8276953ec0cf8d84835e964f6c = L.marker(
+                [30.000314562750535, 31.41264765767031],
+                {}
+            ).addTo(marker_cluster_64d166d460d024770d2d7b2a5c7f9659);
+        
+    
+            var icon_08b47fcb78707141dfa37c18336e1af0 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_afbb9f8276953ec0cf8d84835e964f6c.setIcon(icon_08b47fcb78707141dfa37c18336e1af0);
+        
+    
+        var popup_7fc6b41ae484ca467443178db8a36e31 = L.popup({"maxWidth": 300});
+
+        
+            var html_48c967864c1c356fa60a9ef0f10d5b26 = $(`<div id="html_48c967864c1c356fa60a9ef0f10d5b26" style="width: 100.0%; height: 100.0%;"><b>Cubs Camp</b><br>Day camp, Ages 4–12, Budget-friendly monthly package</div>`)[0];
+            popup_7fc6b41ae484ca467443178db8a36e31.setContent(html_48c967864c1c356fa60a9ef0f10d5b26);
+        
+
+        marker_afbb9f8276953ec0cf8d84835e964f6c.bindPopup(popup_7fc6b41ae484ca467443178db8a36e31)
+        ;
+
+        
+    
+    
+            var marker_1f51bf42e6e184d06e8c757a49c5d322 = L.marker(
+                [30.04874971149945, 31.468233646021876],
+                {}
+            ).addTo(marker_cluster_64d166d460d024770d2d7b2a5c7f9659);
+        
+    
+            var icon_ba8af65061e662b2e06dd68a5f044faf = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_1f51bf42e6e184d06e8c757a49c5d322.setIcon(icon_ba8af65061e662b2e06dd68a5f044faf);
+        
+    
+        var popup_0e264673cc766f444c9a2fd6a3549fb1 = L.popup({"maxWidth": 300});
+
+        
+            var html_d446f3176c856455c156a7ab888fa9a5 = $(`<div id="html_d446f3176c856455c156a7ab888fa9a5" style="width: 100.0%; height: 100.0%;"><b>Blooms Camp</b><br>Day camp, Ages 4–12 & 13–17, Multiple programs</div>`)[0];
+            popup_0e264673cc766f444c9a2fd6a3549fb1.setContent(html_d446f3176c856455c156a7ab888fa9a5);
+        
+
+        marker_1f51bf42e6e184d06e8c757a49c5d322.bindPopup(popup_0e264673cc766f444c9a2fd6a3549fb1)
+        ;
+
+        
+    
+    
+            var marker_d843632d0b496fde3fb25444c97fe476 = L.marker(
+                [30.05678310878387, 31.41546028650547],
+                {}
+            ).addTo(marker_cluster_64d166d460d024770d2d7b2a5c7f9659);
+        
+    
+            var icon_7bfda5f3d5e99e0edd87b58337ae2cfa = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_d843632d0b496fde3fb25444c97fe476.setIcon(icon_7bfda5f3d5e99e0edd87b58337ae2cfa);
+        
+    
+        var popup_0728bbad417c650ff68fb0632fe90860 = L.popup({"maxWidth": 300});
+
+        
+            var html_088290241a322b187c418653c9ed868b = $(`<div id="html_088290241a322b187c418653c9ed868b" style="width: 100.0%; height: 100.0%;"><b>AFCA</b><br>French day camp, Ages 4–12</div>`)[0];
+            popup_0728bbad417c650ff68fb0632fe90860.setContent(html_088290241a322b187c418653c9ed868b);
+        
+
+        marker_d843632d0b496fde3fb25444c97fe476.bindPopup(popup_0728bbad417c650ff68fb0632fe90860)
+        ;
+
+        
+    
+    
+            var marker_e0e20ea750eeb6db954c968d854071b1 = L.marker(
+                [30.11059220271915, 31.37728211534063],
+                {}
+            ).addTo(marker_cluster_64d166d460d024770d2d7b2a5c7f9659);
+        
+    
+            var icon_85e96b9d4ad739826699a015dc32ac29 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_e0e20ea750eeb6db954c968d854071b1.setIcon(icon_85e96b9d4ad739826699a015dc32ac29);
+        
+    
+        var popup_fb2b00a1fefe140d401fdca86bf0abf0 = L.popup({"maxWidth": 300});
+
+        
+            var html_d3fbb6c196240386cca4809ceff6d809 = $(`<div id="html_d3fbb6c196240386cca4809ceff6d809" style="width: 100.0%; height: 100.0%;"><b>Makan</b><br>STEAM day camp, Ages 4–12</div>`)[0];
+            popup_fb2b00a1fefe140d401fdca86bf0abf0.setContent(html_d3fbb6c196240386cca4809ceff6d809);
+        
+
+        marker_e0e20ea750eeb6db954c968d854071b1.bindPopup(popup_fb2b00a1fefe140d401fdca86bf0abf0)
+        ;
+
+        
+    
+    
+            var marker_12fe7f16d951334917de2f2c4e12ce18 = L.marker(
+                [31.353360705420986, 27.234465530681256],
+                {}
+            ).addTo(marker_cluster_64d166d460d024770d2d7b2a5c7f9659);
+        
+    
+            var icon_4375652410d93d7769f21a8648e9e4c5 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_12fe7f16d951334917de2f2c4e12ce18.setIcon(icon_4375652410d93d7769f21a8648e9e4c5);
+        
+    
+        var popup_6a57ee6b8ff8f88e1887c6c45de3a435 = L.popup({"maxWidth": 300});
+
+        
+            var html_c553c9244d046310b092f946512ff7c0 = $(`<div id="html_c553c9244d046310b092f946512ff7c0" style="width: 100.0%; height: 100.0%;"><b>Wellspring Overnight Camps</b><br>Overnight, Ages 12–17, Scouts/Adventure</div>`)[0];
+            popup_6a57ee6b8ff8f88e1887c6c45de3a435.setContent(html_c553c9244d046310b092f946512ff7c0);
+        
+
+        marker_12fe7f16d951334917de2f2c4e12ce18.bindPopup(popup_6a57ee6b8ff8f88e1887c6c45de3a435)
+        ;
+
+        
+    
+    
+            var marker_5dec3113d149c6c567945bd8e78a9b43 = L.marker(
+                [30.065195318987772, 31.593962286505466],
+                {}
+            ).addTo(marker_cluster_64d166d460d024770d2d7b2a5c7f9659);
+        
+    
+            var icon_423c58ceacb5e42b0962b36e39019c65 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_5dec3113d149c6c567945bd8e78a9b43.setIcon(icon_423c58ceacb5e42b0962b36e39019c65);
+        
+    
+        var popup_8a737ec68cde17fa2bfaeaa14956118f = L.popup({"maxWidth": 300});
+
+        
+            var html_75ca9473bbc4ff5f78dc3a26b823fb86 = $(`<div id="html_75ca9473bbc4ff5f78dc3a26b823fb86" style="width: 100.0%; height: 100.0%;"><b>Wellspring Overnight Camps</b><br>Overnight, Ages 8–11, I'glasses & Scouts</div>`)[0];
+            popup_8a737ec68cde17fa2bfaeaa14956118f.setContent(html_75ca9473bbc4ff5f78dc3a26b823fb86);
+        
+
+        marker_5dec3113d149c6c567945bd8e78a9b43.bindPopup(popup_8a737ec68cde17fa2bfaeaa14956118f)
+        ;
+
+        
+    
+    
+            var marker_be53c73feb4a09a9f70093941b1866c5 = L.marker(
+                [27.401162199394893, 33.653347106683654],
+                {}
+            ).addTo(marker_cluster_64d166d460d024770d2d7b2a5c7f9659);
+        
+    
+            var icon_5c3f4bc36cf394ffb4aeb3a93e1b76df = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_be53c73feb4a09a9f70093941b1866c5.setIcon(icon_5c3f4bc36cf394ffb4aeb3a93e1b76df);
+        
+    
+        var popup_45645216b2b025be511dc600de925b91 = L.popup({"maxWidth": 300});
+
+        
+            var html_128f2c2fe66fd291cb2e29ce84d49750 = $(`<div id="html_128f2c2fe66fd291cb2e29ce84d49750" style="width: 100.0%; height: 100.0%;"><b>Blooms Watersports & Military Camp</b><br>Overnight, Ages 9–16, Military & Watersports</div>`)[0];
+            popup_45645216b2b025be511dc600de925b91.setContent(html_128f2c2fe66fd291cb2e29ce84d49750);
+        
+
+        marker_be53c73feb4a09a9f70093941b1866c5.bindPopup(popup_45645216b2b025be511dc600de925b91)
+        ;
+
+        
+    
+    
+            var marker_c6e1fa2e7a14a265ba28f67a823e1fe0 = L.marker(
+                [30.00316954397963, 31.419103051701253],
+                {}
+            ).addTo(marker_cluster_64d166d460d024770d2d7b2a5c7f9659);
+        
+    
+            var icon_f7c57180a139a488c109021c33f17722 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_c6e1fa2e7a14a265ba28f67a823e1fe0.setIcon(icon_f7c57180a139a488c109021c33f17722);
+        
+    
+        var popup_094407bc8915b49947af514141f0f6d4 = L.popup({"maxWidth": 300});
+
+        
+            var html_2625bdad1f27e87002b56c5c3498b0c9 = $(`<div id="html_2625bdad1f27e87002b56c5c3498b0c9" style="width: 100.0%; height: 100.0%;"><b>Flamme</b><br>Day camp, Ages 4–13</div>`)[0];
+            popup_094407bc8915b49947af514141f0f6d4.setContent(html_2625bdad1f27e87002b56c5c3498b0c9);
+        
+
+        marker_c6e1fa2e7a14a265ba28f67a823e1fe0.bindPopup(popup_094407bc8915b49947af514141f0f6d4)
+        ;
+
+        
+    
+    
+            var marker_27fde57acf30b3bf63fbc5fefbf66c62 = L.marker(
+                [30.042417899484278, 31.467683695999565],
+                {}
+            ).addTo(marker_cluster_64d166d460d024770d2d7b2a5c7f9659);
+        
+    
+            var icon_2549e88d2493c2bb7b4b6cf481ef0d19 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_27fde57acf30b3bf63fbc5fefbf66c62.setIcon(icon_2549e88d2493c2bb7b4b6cf481ef0d19);
+        
+    
+        var popup_3ff7a8d4763d6e0c9ed1c4ae77646ff5 = L.popup({"maxWidth": 300});
+
+        
+            var html_94b58c35b83144c55ce9120b126c1354 = $(`<div id="html_94b58c35b83144c55ce9120b126c1354" style="width: 100.0%; height: 100.0%;"><b>Artivite</b><br>Day camp, Ages 4–12</div>`)[0];
+            popup_3ff7a8d4763d6e0c9ed1c4ae77646ff5.setContent(html_94b58c35b83144c55ce9120b126c1354);
+        
+
+        marker_27fde57acf30b3bf63fbc5fefbf66c62.bindPopup(popup_3ff7a8d4763d6e0c9ed1c4ae77646ff5)
+        ;
+
+        
+    
+    
+            var marker_6e863fe3c6fed1d624afc76716238497 = L.marker(
+                [30.034424180693268, 31.46762353832902],
+                {}
+            ).addTo(marker_cluster_64d166d460d024770d2d7b2a5c7f9659);
+        
+    
+            var icon_48c3ad07db66ce75e625a7acaba5febd = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_6e863fe3c6fed1d624afc76716238497.setIcon(icon_48c3ad07db66ce75e625a7acaba5febd);
+        
+    
+        var popup_a80c0f81ce780aa88122b3002cb1ab25 = L.popup({"maxWidth": 300});
+
+        
+            var html_250e5941468f248fbb38d2f5b11f6725 = $(`<div id="html_250e5941468f248fbb38d2f5b11f6725" style="width: 100.0%; height: 100.0%;"><b>Artivite</b><br>Day camp, Ages 4–12</div>`)[0];
+            popup_a80c0f81ce780aa88122b3002cb1ab25.setContent(html_250e5941468f248fbb38d2f5b11f6725);
+        
+
+        marker_6e863fe3c6fed1d624afc76716238497.bindPopup(popup_a80c0f81ce780aa88122b3002cb1ab25)
+        ;
+
+        
+    
+</script>
+</html>
